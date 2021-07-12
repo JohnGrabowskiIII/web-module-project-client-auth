@@ -10,17 +10,18 @@ import localHost from '../authentication/localHost'
 import PasswordField from "./PasswordField"
 import UsernameField from "./UsernameField"
 
-const Login = () => {
+const initLoginState = {
+    username: '',
+    password: ''
+}
 
-    const [loginForm, setLoginForm] = useState({
-        username: '',
-        password: ''
-    })
+const Login = (props) => {
+
+    const [loginForm, setLoginForm] = useState(initLoginState)
 
     const changeHandler = (e) => {
         const {name, value} = e.target
         setLoginForm({...loginForm, [name]: value })
-        console.log(loginForm)
     }
 
     const submit = (e) => {
@@ -28,7 +29,8 @@ const Login = () => {
         axios.post(`${localHost}/api/login`, loginForm)
             .then(res => {
                 localStorage.setItem('token', res.data.payload)
-                // PUSH TO HISTORY HERE
+                // props.context.history.push('/')
+                setLoginForm(initLoginState)
             })
     }
 
@@ -44,5 +46,6 @@ const Login = () => {
     )
 
 }
+
 
 export default Login;
